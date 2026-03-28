@@ -1,0 +1,15 @@
+{
+  "skill_name": "content-recommender",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "gera recomendacoes",
+      "expected_output": "Executa claw-kb rec-flow start, le artigos completos via web_fetch, gera max 3 recomendacoes com titulo, formato, gancho, angulo e quotes. Envia lista ao usuario no Telegram"
+    },
+    {
+      "id": 2,
+      "prompt": "o que posso postar?",
+      "expected_output": "Se nao houver artigos analyzed, responde 'Sem temas selecionados pelo advisor'"
+    }
+  ]
+}

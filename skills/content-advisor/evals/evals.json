@@ -1,0 +1,15 @@
+{
+  "skill_name": "content-advisor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "analisa o que tem",
+      "expected_output": "Executa claw-kb article list --status cataloged --min-relevance 7, agrupa por tema, cruza com historico de publicacoes, seleciona max 3 temas, marca artigos como analyzed"
+    },
+    {
+      "id": 2,
+      "prompt": "quais temas estao quentes?",
+      "expected_output": "Se nao houver artigos catalogados com relevance >= 7, responde 'Sem novidades relevantes no periodo'"
+    }
+  ]
+}

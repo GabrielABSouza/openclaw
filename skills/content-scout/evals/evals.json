@@ -1,0 +1,15 @@
+{
+  "skill_name": "content-scout",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "roda o scout P0",
+      "expected_output": "Executa claw-kb scout start --priority P0, segue o loop de web_fetch/feed/score para cada fonte, reporta ao usuario: quantas fontes checadas, artigos adicionados, artigos catalogados (score 7+), erros"
+    },
+    {
+      "id": 2,
+      "prompt": "scout P2",
+      "expected_output": "Executa claw-kb scout start --priority P2, processa fontes semanais, se nenhuma fonte tiver URL (ex: ai-news-newsletter), retorna done com 0 sources"
+    }
+  ]
+}

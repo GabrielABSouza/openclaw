@@ -1,0 +1,15 @@
+{
+  "skill_name": "content-summarizer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "resume isso: https://aimodels.substack.com/p/why-pay-for-proprietary-search-apis",
+      "expected_output": "Resumo estruturado com TL;DR, Pontos-chave (3-7 itens especificos), Insights para projetos (Agentes Qwen, Marca Pessoal), Hot take, Quotables, Ideias de conteudo com formato definido, Categoria e Nivel"
+    },
+    {
+      "id": 2,
+      "prompt": "https://github.com/anthropics/claude-code",
+      "expected_output": "Resumo padrao + secao extra de Integracao com: nome da ferramenta, repo, setup, aplicacao por projeto, integracao com OpenClaw/Antonio, esforco estimado e prioridade"
+    }
+  ]
+}

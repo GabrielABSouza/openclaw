@@ -546,4 +546,119 @@ ssh root@187.77.247.253
 
 ---
 
-_Documento gerado em 2026-03-24. Atualizar conforme implementação avança._
+## 15. Reply Tags (Reasoning Tag Providers)
+
+O OpenClaw usa um sistema de "reply tags" para modelos que não possuem API nativa de thinking/reasoning.
+
+### Quais providers usam reply tags
+```javascript
+function isReasoningTagProvider(provider) {
+    // Google/Gemini, Google Gemini CLI, Minimax
+    if (normalized === "google" || normalized === "google-gemini-cli" ||
+        normalized === "google-generative-ai") return true;
+    if (normalized.includes("minimax")) return true;
+    return false;
+}
+```
+
+### O que é injetado no system prompt
+Quando o provider é um "reasoning tag provider", o OpenClaw adiciona automaticamente:
+- "ALL internal reasoning MUST be inside `<think>...</think>`"
+- "Format every reply as `<think>...</think>` then `<final>...</final>`, with no other text."
+- "Only text inside `<final>` is shown to the user; everything else is discarded."
+
+### Como o processamento funciona
+1. `stripBlockTags()` processa o texto do modelo
+2. Remove todo conteúdo dentro de `<think>` tags
+3. Se `enforceFinalTag = true`: só entrega conteúdo dentro de `<final>` tags
+4. Se `enforceFinalTag = false`: strip as tags mas mantém o conteúdo
+5. Tags dentro de code spans são preservadas (não processadas)
+
+### REGRAS CRÍTICAS
+- **NUNCA** adicionar regras no AGENTS.md sobre `<think>` ou `<final>` — isso conflita com as instruções automáticas do OpenClaw
+- **NUNCA** mencionar `<final>` em AGENTS.md ou SKILL.md — o modelo pode confundir e emitir `<final>` prematuramente
+- O sistema de reply tags é totalmente gerenciado pelo OpenClaw — não interferir
+- Se o modelo não responde no Telegram, verificar se o conteúdo dentro de `<final>` está sendo gerado corretamente nos logs da sessão
+
+### Fluxo completo de uma resposta
+1. OpenClaw constrói system prompt com reply tag instructions
+2. Modelo responde: `<think>raciocínio</think><final>resposta visível</final>`
+3. `stripBlockTags()` extrai conteúdo de `<final>`, descarta `<think>`
+4. Conteúdo limpo passa pelo markdown renderer (Telegram = HTML)
+5. Texto é enviado via block streaming ao canal
+
+### Debug: verificar nos logs da sessão
+```bash
+# Ver session JSONL mais recente
+find /root/.openclaw -name "*.jsonl" -mmin -5
+
+# Extrair texto do assistant
+cat <session>.jsonl | python3 -c "
+import json, sys
+for line in sys.stdin:
+    d = json.loads(line)
+    if d.get('type')=='message' and d.get('message',{}).get('role')=='assistant':
+        for c in d['message']['content']:
+            if c.get('type')=='text':
+                print(c['text'][:500])
+"
+```
+
+---
+
+## 16. Agent Loop — Referência Rápida
+
+### Fluxo principal
+intake → context assembly → model inference → tool execution → streaming replies → persistence
+
+### Queueing
+- Runs são serializados por session key (evita race conditions)
+- Channels escolhem modo de fila: collect/steer/followup
+
+### Reply shaping
+- `NO_REPLY` é token silencioso (filtrado do output)
+- Messaging tool duplicates são removidos
+- Se não resta conteúdo renderizável e houve erro de tool, emite fallback error
+
+### Streaming
+- Block streaming emite chunks parciais em `text_end` ou `message_end`
+- Preview streaming (Telegram `partial`) atualiza mensagem temporária durante geração
+- Não existe token-delta streaming direto para canais
+
+### Session lifecycle
+- Skills são snapshotted no início da sessão e reusados
+- Mudanças em skills requerem nova sessão (ou skills watcher habilitado)
+- Sempre limpar sessão após mudanças em skills: `rm /root/.openclaw/agents/main/sessions/*.jsonl`
+
+### Timeouts
+- agent.wait: 30s (default)
+- Agent runtime: 172800s (48h)
+
+---
+
+## 17. Skills — Como o Modelo Interage
+
+### Injeção no system prompt
+Skills elegíveis são listadas como "compact XML list of available skills" (~97 chars por skill).
+
+### Ativação
+1. O modelo decide ativar baseado no `description` do frontmatter
+2. Modelo usa `read` tool para ler o SKILL.md
+3. Modelo segue as instruções do SKILL.md
+
+### Precedência de carregamento
+1. Workspace: `<workspace>/skills/` (MAIOR prioridade)
+2. Project agent: `<workspace>/.agents/skills/`
+3. Personal agent: `~/.agents/skills/`
+4. Managed/local: `~/.openclaw/skills/`
+5. Bundled: instaladas com OpenClaw
+6. Extra dirs: `skills.load.extraDirs`
+
+### Session snapshot
+- Skills são snapshotted ao iniciar sessão
+- Mudanças só tomam efeito em nova sessão
+- `skills.load.watch: true` permite refresh mid-session
+
+---
+
+_Documento gerado em 2026-03-24. Atualizado em 2026-03-28 com reply tags, agent loop e skills._
