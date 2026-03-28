@@ -1,5 +1,6 @@
 /**
- * Seed: popula as 18 fontes iniciais definidas no plano.
+ * Seed: popula fontes iniciais no banco.
+ * Personalize o array `sources` abaixo com suas fontes de interesse.
  * Executar: node --experimental-strip-types seed.ts
  */
 
@@ -7,29 +8,28 @@ import { getDb } from './src/db.ts';
 
 const db = getDb();
 
-const sources = [
+// Adicione suas fontes aqui. Exemplos:
+//
+// Tipos suportados: rss, blog, newsletter, youtube
+// Prioridades: P0 (diario), P1 (3x/semana), P2 (semanal)
+//
+// { name: 'anthropic-blog', type: 'blog', url: 'https://www.anthropic.com/news', priority: 'P0', frequency: 'daily' },
+// { name: 'openai-blog', type: 'rss', url: 'https://openai.com/blog/rss.xml', priority: 'P0', frequency: 'daily' },
+// { name: 'hacker-news', type: 'rss', url: 'https://news.ycombinator.com/rss', priority: 'P1', frequency: '3x-week' },
+// { name: 'minha-newsletter', type: 'newsletter', url: null, priority: 'P2', frequency: 'weekly' },
+
+const sources: Array<{ name: string; type: string; url: string | null; priority: string; frequency: string }> = [
   // P0 — daily
-  { name: 'anthropic-blog', type: 'blog', url: 'https://www.anthropic.com/news', priority: 'P0', frequency: 'daily' },
-  { name: 'openai-blog', type: 'rss', url: 'https://openai.com/blog/rss.xml', priority: 'P0', frequency: 'daily' },
-  { name: 'google-ai-blog', type: 'rss', url: 'https://blog.google/technology/ai/rss/', priority: 'P0', frequency: 'daily' },
-  { name: 'huggingface-blog', type: 'blog', url: 'https://huggingface.co/blog', priority: 'P0', frequency: 'daily' },
-  { name: 'techcrunch-ai', type: 'rss', url: 'https://techcrunch.com/category/artificial-intelligence/feed/', priority: 'P0', frequency: 'daily' },
 
   // P1 — 3x-week
-  { name: 'microsoft-ai-blog', type: 'blog', url: 'https://news.microsoft.com/source/topics/ai/', priority: 'P1', frequency: '3x-week' },
-  { name: 'meta-ai-blog', type: 'blog', url: 'https://ai.meta.com/blog/', priority: 'P1', frequency: '3x-week' },
-  { name: 'deepmind-blog', type: 'blog', url: 'https://deepmind.google/discover/blog/', priority: 'P1', frequency: '3x-week' },
-  { name: 'mit-tech-review', type: 'rss', url: 'https://www.technologyreview.com/feed/', priority: 'P1', frequency: '3x-week' },
-  { name: 'simon-willison', type: 'rss', url: 'https://simonwillison.net/atom/everything/', priority: 'P1', frequency: '3x-week' },
 
   // P2 — weekly
-  { name: 'ai-news-newsletter', type: 'newsletter', url: null, priority: 'P2', frequency: 'weekly' },
-  { name: 'the-batch-deeplearning', type: 'newsletter', url: 'https://www.deeplearning.ai/the-batch/', priority: 'P2', frequency: 'weekly' },
-  { name: 'import-ai', type: 'rss', url: 'https://importai.substack.com/feed', priority: 'P2', frequency: 'weekly' },
-  { name: 'ben-bens-bites', type: 'blog', url: 'https://bensbites.com/', priority: 'P2', frequency: 'weekly' },
-  { name: 'towards-data-science', type: 'rss', url: 'https://towardsdatascience.com/feed', priority: 'P2', frequency: 'weekly' },
-  { name: 'arxiv-cs-ai', type: 'rss', url: 'https://rss.arxiv.org/rss/cs.AI', priority: 'P2', frequency: 'weekly' },
 ];
+
+if (sources.length === 0) {
+  console.log(JSON.stringify({ ok: true, command: 'seed', data: { total: 0, added: 0, message: 'Nenhuma fonte configurada. Edite seed.ts ou use o CLI: claw-kb source add --name "..." --type rss --url "..." --priority P0 --frequency daily' } }));
+  process.exit(0);
+}
 
 const stmt = db.prepare(`
   INSERT OR IGNORE INTO sources (name, type, url, priority, frequency)

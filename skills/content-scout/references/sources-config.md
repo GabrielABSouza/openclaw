@@ -1,60 +1,76 @@
-# Configuração de Fontes
+# Configuracao de Fontes
 
-Documentação das fontes cadastradas no claw-kb e como processá-las.
+Documentacao de como cadastrar e processar fontes no claw-kb.
 
-## Prioridades e Frequência
+## Prioridades e Frequencia
 
-| Prioridade | Frequência | Cron |
-|-----------|------------|------|
-| P0 | Diário | Todos os dias 7h BRT |
-| P1 | 3x/semana | Seg/Qua/Sex 7h30 BRT |
-| P2 | Semanal | Domingo 8h BRT |
+| Prioridade | Frequencia | Descricao |
+|-----------|------------|-----------|
+| P0 | Diario | Fontes criticas que voce quer acompanhar todo dia |
+| P1 | 3x/semana | Fontes importantes mas que nao precisam de check diario |
+| P2 | Semanal | Newsletters, digests, fontes de volume alto |
 
-## Como processar cada tipo
+## Como adicionar fontes
+
+Via CLI:
+```bash
+claw-kb source add --name "nome-da-fonte" --type rss --url "https://..." --priority P0 --frequency daily
+```
+
+Ou editando `claw-kb/seed.ts` e rodando:
+```bash
+node --experimental-strip-types seed.ts
+```
+
+## Tipos de fonte e como o scout processa cada um
 
 ### RSS (`type: rss`)
 - Fazer `web_fetch` na URL do feed
-- Parsear itens: título, link, description/summary, pubDate
+- Parsear itens: titulo, link, description/summary, pubDate
 - Cada item vira um artigo potencial
 
 ### Blog (`type: blog`)
 - Fazer `web_fetch` na URL do blog
-- Extrair da página: lista de posts recentes com título, URL, excerpt
-- Navegar apenas a página principal, não seguir links
+- Extrair da pagina: lista de posts recentes com titulo, URL, excerpt
+- Navegar apenas a pagina principal, nao seguir links
 
 ### Newsletter (`type: newsletter`)
-- Pode não ter URL (manual via Telegram)
+- Pode nao ter URL (alimentada manualmente via Telegram)
 - Se tiver URL (ex: Substack), fazer `web_fetch` e extrair posts recentes
-- Se não tiver URL, o scout ignora (fonte alimentada manualmente)
+- Se nao tiver URL, o scout ignora (fonte alimentada manualmente)
 
 ### YouTube (`type: youtube`)
 - Fazer `web_fetch` na URL do canal/playlist
-- Extrair: título do vídeo, URL, descrição curta
-- content-type será `video`
+- Extrair: titulo do video, URL, descricao curta
+- content-type sera `video`
 
-## Fontes P0 (daily)
+## Exemplos de fontes por area
 
-1. **anthropic-blog** (rss) — Blog oficial da Anthropic
-2. **openai-blog** (blog) — Blog oficial da OpenAI
-3. **google-ai-blog** (rss) — Blog de AI do Google
-4. **huggingface-blog** (blog) — Blog do Hugging Face
-5. **techcrunch-ai** (rss) — Feed de AI do TechCrunch
-6. **the-verge-ai** (rss) — Feed de AI do The Verge
+### AI / Machine Learning
+```bash
+claw-kb source add --name "anthropic-blog" --type blog --url "https://www.anthropic.com/news" --priority P0 --frequency daily
+claw-kb source add --name "openai-blog" --type rss --url "https://openai.com/blog/rss.xml" --priority P0 --frequency daily
+claw-kb source add --name "huggingface-blog" --type blog --url "https://huggingface.co/blog" --priority P1 --frequency "3x-week"
+claw-kb source add --name "arxiv-cs-ai" --type rss --url "https://rss.arxiv.org/rss/cs.AI" --priority P2 --frequency weekly
+```
 
-## Fontes P1 (3x-week)
+### Tech / Startups
+```bash
+claw-kb source add --name "techcrunch-ai" --type rss --url "https://techcrunch.com/category/artificial-intelligence/feed/" --priority P0 --frequency daily
+claw-kb source add --name "hacker-news" --type rss --url "https://news.ycombinator.com/rss" --priority P1 --frequency "3x-week"
+```
 
-7. **microsoft-ai-blog** (blog) — Blog de AI da Microsoft
-8. **meta-ai-blog** (blog) — Blog de AI da Meta
-9. **deepmind-blog** (blog) — Blog do DeepMind
-10. **mit-tech-review** (rss) — MIT Technology Review
-11. **ars-technica-ai** (rss) — Ars Technica Technology Lab
-12. **simon-willison** (rss) — Blog do Simon Willison
+### Newsletters
+```bash
+claw-kb source add --name "the-batch" --type newsletter --url "https://www.deeplearning.ai/the-batch/" --priority P2 --frequency weekly
+claw-kb source add --name "import-ai" --type rss --url "https://importai.substack.com/feed" --priority P2 --frequency weekly
+```
 
-## Fontes P2 (weekly)
+## Gerenciar fontes
 
-13. **ai-news-newsletter** (newsletter) — Manual, sem URL
-14. **the-batch-deeplearning** (newsletter) — The Batch do DeepLearning.ai
-15. **import-ai** (newsletter) — Import AI (Substack)
-16. **ben-bens-bites** (newsletter) — Ben's Bites
-17. **towards-data-science** (blog) — Towards Data Science
-18. **arxiv-cs-ai** (rss) — arXiv CS.AI
+```bash
+claw-kb source list                    # listar todas
+claw-kb source check --id N            # verificar status
+claw-kb source enable --id N           # habilitar
+claw-kb source disable --id N          # desabilitar
+```

@@ -258,25 +258,32 @@ EOF
 
 ## 5. Popular fontes e testar
 
-### 5.1 Seed das fontes iniciais
+### 5.1 Adicionar suas fontes
 
-O repo vem com 16 fontes pre-configuradas (Anthropic, OpenAI, Google, HuggingFace, TechCrunch, etc):
+O repo vem com o `seed.ts` vazio — voce configura as fontes que quiser. Pode fazer via CLI ou editando o seed:
 
 ```bash
 cd ~/.openclaw/workspace/claw-kb
+
+# Via CLI (uma por uma)
+node --experimental-strip-types src/index.ts source add \
+  --name "anthropic-blog" --type blog \
+  --url "https://www.anthropic.com/news" \
+  --priority P0 --frequency daily
+
+node --experimental-strip-types src/index.ts source add \
+  --name "hacker-news" --type rss \
+  --url "https://news.ycombinator.com/rss" \
+  --priority P1 --frequency "3x-week"
+
+# Ou: edite seed.ts com suas fontes e rode
 node --experimental-strip-types seed.ts
 ```
 
-Para adicionar suas proprias fontes:
+Tipos suportados: `rss`, `blog`, `newsletter`, `youtube`
+Prioridades: `P0` (diario), `P1` (3x/semana), `P2` (semanal)
 
-```bash
-node --experimental-strip-types src/index.ts source add \
-  --name "meu-blog-favorito" \
-  --type rss \
-  --url "https://exemplo.com/feed" \
-  --priority P1 \
-  --frequency "3x-week"
-```
+Veja mais exemplos em `skills/content-scout/references/sources-config.md`.
 
 ### 5.2 Iniciar o gateway
 
