@@ -79,21 +79,22 @@ Este pipeline exige um modelo que faca **tool calling** (chamar `exec`, `web_fet
 
 | Modelo | Resultado | Notas |
 |--------|-----------|-------|
-| `google/gemini-2.5-flash-lite` | **Funciona** | Unico que completou o pipeline. Precisa de `maxTokens: 8192`. Custo ~$0 |
+| `google/gemini-2.5-flash` | **Funciona** | Unico que completou o pipeline de forma confiavel. Recomendado |
+| `google/gemini-2.5-flash-lite` | Instavel | Funciona as vezes, mas retorna 0 tokens com frequencia. Trava em fluxos multi-step |
 | `groq/moonshotai/kimi-k2-instruct` | Parcial | Bom conversacional, mas trava em fluxos de 3+ tool calls |
 | `groq/qwen/qwen3-32b` | Nao funciona | Forte em raciocinio mas vaza thinking tags no output |
 | `groq/meta-llama/llama-4-scout-17b-16e-instruct` | Parcial | Tool calling ok mas inconsistente em fluxos longos |
 | `groq/llama-3.3-70b-versatile` | Nao funciona | Tool calling problematico |
 | `openai/gpt-4o-mini` | Nao testado pipeline | Backup economico, deve funcionar |
 
-**Recomendacao:** Comece com `google/gemini-2.5-flash-lite`. E gratis, rapido, e o unico validado end-to-end neste pipeline.
+**Recomendacao:** Use `google/gemini-2.5-flash`. O Flash Lite (versao menor) funciona para conversas simples mas e instavel no pipeline — retorna output vazio com frequencia em fluxos multi-step.
 
-### Limitacoes conhecidas do Gemini Flash Lite
+### Limitacoes conhecidas (Gemini Flash / Flash Lite)
 
-- Retorna 0 tokens se receber >9KB de tool result de uma vez
-- Trava em fluxos com 3+ tool calls sequenciais (resolvido com state machines no CLI)
+- Flash Lite retorna 0 tokens se receber >9KB de tool result de uma vez
+- Flash Lite trava em fluxos com 3+ tool calls sequenciais (resolvido com state machines no CLI)
 - SKILL.md deve ter **menos de 3KB** — conteudo pesado vai em `references/`
-- `maxTokens: 8192` e obrigatorio (sem isso retorna output vazio)
+- `maxTokens: 8192` e recomendado (sem isso Flash Lite retorna output vazio)
 
 ---
 
@@ -132,9 +133,9 @@ chmod +x ~/.openclaw/workspace/claw-kb/run.sh
     }
   },
   "models": {
-    "default": "google/gemini-2.5-flash-lite",
+    "default": "google/gemini-2.5-flash",
     "config": {
-      "google/gemini-2.5-flash-lite": {
+      "google/gemini-2.5-flash": {
         "maxTokens": 8192
       }
     }
