@@ -1,21 +1,21 @@
 # OpenClaw Content Intelligence — Contexto para Claude Code
 
 ## Quem sou eu
-Gabriel Bastos, Head of AI / AI Consultant. Uso OpenClaw como assistente pessoal via Telegram (@BichoAntonioBot) para curadoria de conteudo, resumos estruturados e producao de conteudo para redes sociais.
+<your-name>, <your-role>. Uso OpenClaw como assistente pessoal via Telegram (<your-bot>) para curadoria de conteudo, resumos estruturados e producao de conteudo para redes sociais.
 
 ## Ambiente
-- **VPS**: Hostinger srv1516765 (187.77.247.253)
+- **VPS**: <your-provider> <your-hostname> (<your-server-ip>)
 - **OpenClaw**: v2026.3.23-2
 - **Modelo**: `google/gemini-2.5-flash-lite` (maxTokens: 8192 configurado)
 - **Canal**: Telegram
-- **Workspace**: `/root/.openclaw/workspace/`
-- **Config**: `/root/.openclaw/openclaw.json`
+- **Workspace**: `~/.openclaw/workspace/`
+- **Config**: `~/.openclaw/openclaw.json`
 - **Gateway**: porta 18789 (loopback), systemd `openclaw-gateway.service`
 
 ## Estrutura do projeto
 
 ### claw-kb (CLI de Knowledge Base)
-Caminho: `/root/.openclaw/workspace/claw-kb/`
+Caminho: `~/.openclaw/workspace/claw-kb/`
 Runtime: `node --experimental-strip-types src/index.ts <command>`
 DB: SQLite em `claw-kb/content.db`
 
@@ -29,7 +29,7 @@ Comandos principais:
 - `scout start/feed/score/skip/status/reset` — state machine do scout
 - `rec-flow start/feed/skip/rec/done/status/reset` — state machine do recommender
 
-### Skills (em `/root/.openclaw/workspace/skills/`)
+### Skills (em `~/.openclaw/workspace/skills/`)
 - **content-summarizer**: Resumir links/textos/PDFs com template estruturado
 - **content-scout**: Varrer fontes e catalogar artigos (usa claw-kb scout)
 - **content-advisor**: Analisar e agrupar temas para recomendacao
@@ -56,13 +56,13 @@ O OpenClaw injeta automaticamente instrucoes de `<think>/<final>` no system prom
 
 ### Reiniciar gateway (limpo)
 ```bash
-rm -f /root/.openclaw/agents/main/sessions/*.jsonl
+rm -f ~/.openclaw/agents/main/sessions/*.jsonl
 systemctl --user restart openclaw-gateway.service
 ```
 
 ### Ver logs da sessao
 ```bash
-find /root/.openclaw -name "*.jsonl" -mmin -5
+find ~/.openclaw -name "*.jsonl" -mmin -5
 cat <session>.jsonl | python3 -c "
 import json, sys
 for line in sys.stdin:
@@ -80,19 +80,19 @@ for line in sys.stdin:
 
 ### Rodar testes do claw-kb
 ```bash
-cd /root/.openclaw/workspace/claw-kb
+cd ~/.openclaw/workspace/claw-kb
 rm -f content.db src/.scout-state.json src/.rec-flow-state.json
 node --experimental-strip-types test.ts
 ```
 
 ### Seed de fontes
 ```bash
-cd /root/.openclaw/workspace/claw-kb
+cd ~/.openclaw/workspace/claw-kb
 node --experimental-strip-types seed.ts
 ```
 
 ## Known Issues
-- Gemini Flash Lite retorna `output: 0, content: []` em certos contextos — configurar `maxTokens: 8192` no modelo ajuda
+- Gemini Flash Lite pode retornar `output: 0, content: []` em certos contextos — configurar `maxTokens: 8192` no modelo ajuda
 - Sempre limpar sessoes apos mudancas em skills ou AGENTS.md
 - `tools.elevated.allowFrom.telegram` deve ser `["direct"]` (array, NAO boolean)
 - Resetar `usageStats` em auth-profiles.json apos mudancas de auth
@@ -109,5 +109,5 @@ node --experimental-strip-types seed.ts
 - Config reference: https://docs.openclaw.ai/gateway/configuration-reference.md
 
 ## Repo Git
-`github.com/GabrielABSouza/openclaw` — branch main
+`github.com/<your-github-user>/openclaw` — branch main
 Contem: claw-kb/, skills/, docs/

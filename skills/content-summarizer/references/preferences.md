@@ -1,7 +1,6 @@
 # Preferencias de Resumo
-> Ultima atualizacao: 2026-03-24
 > Este arquivo e lido pelo content-summarizer antes de cada resumo.
-> Gerenciado automaticamente pela skill feedback-loop.
+> Personalize conforme suas preferencias.
 
 ## Tom
 - Casual e direto, como um parceiro de trabalho falaria
@@ -13,7 +12,7 @@
 
 ## Conteudo
 - Priorizar dados concretos e aplicabilidade pratica
-- Insights devem ser especificos para os projetos do Gabriel, nao genericos
+- Insights devem ser especificos para os projetos do usuario, nao genericos
 - (ajustes futuros serao adicionados aqui)
 
 ## Regras absolutas
@@ -22,4 +21,4 @@
 - NUNCA: Inflar conteudo mediano como revolucionario
 
 ## Exemplos de referencia
-- (sera preenchido conforme Gabriel aprovar resumos)
+- (sera preenchido conforme o usuario aprovar resumos)

@@ -1,42 +1,40 @@
-# Scoring System de Relevância
+# Scoring System de Relevancia
 
-O Gabriel é Head de AI / AI Consultant. Ele trabalha com:
-- 11 agentes Qwen em produção
-- Conciliação bancária automatizada
-- Programa educacional "Construa Sua Carreira"
-- Marca pessoal / posicionamento como autoridade em AI
-- OpenClaw como plataforma de automação
+Configurar abaixo o perfil do usuario para calibrar o scoring de artigos.
 
-Providers que ele usa ativamente: Anthropic/Claude, Google/Gemini, Alibaba/Qwen
+## Perfil do usuario
+- Cargo/role: <your-role>
+- Projetos ativos: (listar projetos relevantes para curadoria)
+- Providers/ferramentas que usa: (ex: Anthropic/Claude, Google/Gemini)
 
-## Critérios positivos
+## Criterios positivos
 
-| Critério | Pontos | Quando aplicar |
+| Criterio | Pontos | Quando aplicar |
 |----------|--------|----------------|
-| Projeto direto | +3 | Título/excerpt menciona tema central de um dos projetos acima |
-| Ferramenta integrável | +2 | Repo, CLI, API, framework que pode ser integrado à stack do Gabriel |
-| Provider relevante | +2 | Breaking news de Anthropic, Google/Gemini, ou Alibaba/Qwen |
-| Tema publicável | +2 | Assunto onde Gabriel pode agregar opinião original baseada em experiência real |
-| Dados concretos | +1 | Contém benchmarks, métricas, case studies quantitativos |
-| Opinião qualificada | +1 | Análise de alguém reconhecido, não só notícia factual |
-| Tendência emergente | +1 | Tema apareceu em 2+ fontes nos últimos 7 dias |
+| Projeto direto | +3 | Titulo/excerpt menciona tema central de um dos projetos acima |
+| Ferramenta integravel | +2 | Repo, CLI, API, framework que pode ser integrado a stack do usuario |
+| Provider relevante | +2 | Breaking news de provider que o usuario usa ativamente |
+| Tema publicavel | +2 | Assunto onde o usuario pode agregar opiniao original baseada em experiencia real |
+| Dados concretos | +1 | Contem benchmarks, metricas, case studies quantitativos |
+| Opiniao qualificada | +1 | Analise de alguem reconhecido, nao so noticia factual |
+| Tendencia emergente | +1 | Tema apareceu em 2+ fontes nos ultimos 7 dias |
 
-## Critérios negativos
+## Criterios negativos
 
-| Critério | Pontos | Quando aplicar |
+| Criterio | Pontos | Quando aplicar |
 |----------|--------|----------------|
-| Conteúdo introdutório | -2 | Tutorial básico, "o que é X", conceitos que Gabriel já domina |
-| Notícia requentada | -3 | Mesmo fato já ingerido por outra fonte, sem ângulo novo |
-| Hype sem substância | -2 | Buzzwords sem informação acionável, dados, ou insight técnico |
-| Fora de escopo | -5 | Sem relação com AI, tech, negócios, carreira, ou marketing |
+| Conteudo introdutorio | -2 | Tutorial basico, "o que e X", conceitos que o usuario ja domina |
+| Noticia requentada | -3 | Mesmo fato ja ingerido por outra fonte, sem angulo novo |
+| Hype sem substancia | -2 | Buzzwords sem informacao acionavel, dados, ou insight tecnico |
+| Fora de escopo | -5 | Sem relacao com as areas de interesse do usuario |
 
-## Cálculo
+## Calculo
 
 score = soma(positivos) + soma(negativos)
 score = max(0, min(10, score))
 
 ## Breakdown JSON
 
-Para CADA critério, registrar:
-- matched: o que matchou (ex: "agentes-qwen", "anthropic", true) ou null/false se não matchou
-- points: pontos atribuídos (0 se não matchou)
+Para CADA criterio, registrar:
+- matched: o que matchou (ex: "projeto-x", "anthropic", true) ou null/false se nao matchou
+- points: pontos atribuidos (0 se nao matchou)

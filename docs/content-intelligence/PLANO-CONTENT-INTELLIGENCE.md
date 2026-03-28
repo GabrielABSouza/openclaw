@@ -7,18 +7,18 @@
 
 ## 1. Visão Geral
 
-Pipeline de inteligência de conteúdo para o Bicho Antonio Bot (OpenClaw, VPS Hostinger).
+Pipeline de inteligencia de conteudo usando OpenClaw.
 
 **O que faz:**
 1. **Consome** conteúdo de blogs e newsletters de AI/tech via RSS e web scraping
 2. **Cataloga** de forma estruturada em SQLite via CLI determinística (título, URL, tags, resumo curto do feed)
-3. **Filtra e deduplica** conteúdo relevante, cruzando com histórico de publicações do Gabriel
+3. **Filtra e deduplica** conteúdo relevante, cruzando com histórico de publicações do usuario
 4. **Lê artigos completos** dos temas filtrados e gera briefings de conteúdo acionáveis
 5. **Entrega** recomendações prontas no Telegram
-6. **Gera texto otimizado pro NotebookLM** pra Gabriel ouvir como podcast durante o treino
+6. **Gera texto otimizado pro NotebookLM** pra o usuario ouvir como podcast durante o treino
 
 **O que NÃO faz (por enquanto):**
-- Não gera o texto final (Gabriel usa Claude Opus direto)
+- Não gera o texto final (o usuario usa Claude Opus direto)
 - Não publica automaticamente
 - Não consome Twitter/X nem Reddit (fase futura)
 - Não transcreve vídeos (só título + descrição)
@@ -32,7 +32,7 @@ Pipeline de inteligência de conteúdo para o Bicho Antonio Bot (OpenClaw, VPS H
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                            VPS Hostinger                               │
+│                            VPS                                            │
 │                                                                        │
 │  ┌──────────┐    ┌────────────────┐    ┌────────────────────┐         │
 │  │  Cron     │───►│  OpenClaw       │───►│  claw-kb CLI       │         │
@@ -53,7 +53,7 @@ Pipeline de inteligência de conteúdo para o Bicho Antonio Bot (OpenClaw, VPS H
 │   │  (título+excerpt)│  │  Filtra temas    │  │  Envia no Telegram   │  │
 │   └─────────────────┘  └─────────────────┘  └──────────────────────┘  │
 │                                                                        │
-│   SKILLS SOB DEMANDA (Gabriel pede manualmente)                        │
+│   SKILLS SOB DEMANDA (o usuario pede manualmente)                        │
 │                                                                        │
 │   ┌─────────────────┐  ┌─────────────────┐                            │
 │   │  summarizer      │  │  feedback-loop   │                            │
@@ -67,14 +67,14 @@ Pipeline de inteligência de conteúdo para o Bicho Antonio Bot (OpenClaw, VPS H
 │                         ▼                                              │
 │                  ┌──────────────┐                                      │
 │                  │  Telegram    │                                      │
-│                  │  (Gabriel)   │                                      │
+│                  │  (o usuario)   │                                      │
 │                  └──────┬──────┘                                      │
 │                         │                                              │
 └─────────────────────────┼──────────────────────────────────────────────┘
                           │
                           ▼
                   ┌──────────────┐
-                  │  Gabriel     │
+                  │  o usuario     │
                   │  curadoria + │
                   │  Claude Opus │
                   │  (escrita)   │
@@ -97,8 +97,8 @@ O agente chama `claw-kb <comando>` via exec. A CLI:
 ### 3.1 Stack
 - **Runtime:** Node.js (já na VPS)
 - **Database:** better-sqlite3 (sync, zero overhead)
-- **Local:** `/root/.openclaw/tools/claw-kb/`
-- **DB path:** `/root/.openclaw/tools/claw-kb/content.db`
+- **Local:** `~/.openclaw/tools/claw-kb/`
+- **DB path:** `~/.openclaw/tools/claw-kb/content.db`
 - **Chamada:** `claw-kb <comando> [flags]`
 
 ### 3.2 Schema
@@ -195,7 +195,7 @@ CREATE INDEX idx_publications_published ON publications(published_at);
                                                            ▼
                                                      "recommended"
                                                            │
-                                              Gabriel aprova/rejeita
+                                              o usuario aprova/rejeita
                                                      │          │
                                                      ▼          ▼
                                                "published"  "rejected"
@@ -234,7 +234,7 @@ PUBLICAÇÕES
   claw-kb pub topics                               # todos os tópicos com contagem
 
 ANÁLISE
-  claw-kb crossref --article-id <N>                # publicações do Gabriel sobre temas similares ao artigo
+  claw-kb crossref --article-id <N>                # publicações do usuario sobre temas similares ao artigo
   claw-kb gaps [--days 30]                         # categorias/tópicos com artigos ingeridos mas sem publicação recente
   claw-kb digest [--since yesterday] [--priority P0]  # resumo do período
 
@@ -301,7 +301,7 @@ Twitter/X, Reddit, e transcrição de YouTube ficam pra fase futura.
 
 **Por que P2:** Conteúdo de mercado/visão macro e vídeos longos. Valor mais estratégico que tático. Basta 1x/semana.
 
-**YouTube:** Apenas título + descrição. Sem transcrição (custo alto de tokens). Se Gabriel quiser transcrição, pede manualmente.
+**YouTube:** Apenas título + descrição. Sem transcrição (custo alto de tokens). Se o usuario quiser transcrição, pede manualmente.
 
 ### 4.4 Scoring System de Relevância
 
@@ -311,10 +311,10 @@ O agente **não chuta** um número de 0-10. Ele aplica critérios objetivos e so
 
 | Critério | Pontos | Exemplo |
 |----------|--------|---------|
-| **Projeto direto**: menciona tema central de um dos projetos do Gabriel (agentes AI, conciliação bancária, construa sua carreira, marca pessoal/posicionamento) | +3 | Artigo sobre arquitetura de multi-agent systems → +3 (agentes) |
-| **Ferramenta integrável**: repo, CLI, API, framework que pode ser integrado à stack do Gabriel (OpenClaw, agentes Qwen, workflow de automação) | +2 | Novo framework de orquestração de agentes com repo GitHub → +2 |
-| **Provider relevante**: breaking news ou atualização de provider que o Gabriel usa ativamente (Anthropic/Claude, Google/Gemini, Alibaba/Qwen) | +2 | "Anthropic lança tool-use nativo no Claude" → +2 |
-| **Tema publicável**: assunto que cruza com temas onde Gabriel já publicou ou pode publicar com opinião original | +2 | Debate sobre AI agents em produção → +2 (Gabriel tem experiência real) |
+| **Projeto direto**: menciona tema central de um dos projetos do usuario (agentes AI, conciliação bancária, construa sua carreira, marca pessoal/posicionamento) | +3 | Artigo sobre arquitetura de multi-agent systems → +3 (agentes) |
+| **Ferramenta integrável**: repo, CLI, API, framework que pode ser integrado à stack do usuario (OpenClaw, agentes Qwen, workflow de automação) | +2 | Novo framework de orquestração de agentes com repo GitHub → +2 |
+| **Provider relevante**: breaking news ou atualização de provider que o usuario usa ativamente (Anthropic/Claude, Google/Gemini, Alibaba/Qwen) | +2 | "Anthropic lança tool-use nativo no Claude" → +2 |
+| **Tema publicável**: assunto que cruza com temas onde o usuario já publicou ou pode publicar com opinião original | +2 | Debate sobre AI agents em produção → +2 (o usuario tem experiência real) |
 | **Dados concretos**: contém benchmarks, métricas, case studies, comparativos quantitativos (não especulação) | +1 | "Qwen3-72B scored 92.3% on HumanEval" → +1 |
 | **Opinião qualificada**: análise ou take de alguém reconhecido (não é só notícia factual repostada) | +1 | Simon Willison analisando trade-offs de agent frameworks → +1 |
 | **Tendência emergente**: tema que apareceu em 2+ fontes nos últimos 7 dias (sinal de momentum) | +1 | "Agent architectures" apareceu em Anthropic blog + HF blog + Raschka essa semana → +1 |
@@ -323,7 +323,7 @@ O agente **não chuta** um número de 0-10. Ele aplica critérios objetivos e so
 
 | Critério | Pontos | Exemplo |
 |----------|--------|---------|
-| **Conteúdo introdutório/tutorial básico**: explica conceitos que Gabriel já domina (o que é RAG, como funciona um LLM, intro a prompt engineering) | -2 | "O que são AI agents? Um guia para iniciantes" → -2 |
+| **Conteúdo introdutório/tutorial básico**: explica conceitos que o usuario já domina (o que é RAG, como funciona um LLM, intro a prompt engineering) | -2 | "O que são AI agents? Um guia para iniciantes" → -2 |
 | **Notícia requentada**: mesmo fato já coberto por outra fonte ingerida, sem análise ou ângulo novo | -3 | Terceiro artigo sobre o mesmo lançamento, sem opinião adicional → -3 |
 | **Hype sem substância**: artigo que usa buzzwords mas não traz informação acionável, dados, ou insight técnico | -2 | "AI vai revolucionar tudo em 2026! 10 previsões!" → -2 |
 | **Fora de escopo**: não tem relação com AI, tech, negócios, carreira, ou marketing | -5 | Artigo sobre culinária, esportes, entretenimento genérico → -5 |
@@ -366,7 +366,7 @@ O agente salva o breakdown do score junto com o artigo:
 }
 ```
 
-Isso permite auditar: se Gabriel discordar de um score, a gente vê qual critério pesou errado e ajusta.
+Isso permite auditar: se o usuario discordar de um score, a gente vê qual critério pesou errado e ajusta.
 
 ### 4.5 Fluxo de consumo (executado pelo Scout)
 
@@ -394,7 +394,7 @@ Para cada fonte habilitada na prioridade do dia:
 
 | Problema | Fallback |
 |----------|----------|
-| Site com paywall | Marcar fonte como "failed" no log, tentar browser tool, notificar Gabriel |
+| Site com paywall | Marcar fonte como "failed" no log, tentar browser tool, notificar o usuario |
 | RSS indisponível | Fallback pra web scraping da página de listagem do blog |
 | Fonte fora do ar | Skip, tentar no próximo ciclo, alertar após 3 falhas consecutivas |
 | Conteúdo duplicado (mesmo artigo em múltiplas fontes) | Dedup por URL. Se URLs diferentes pro mesmo conteúdo, o advisor deduplica por tema |
@@ -445,7 +445,7 @@ Advisor roda às 10h com esses dados.
 1. Buscar artigos recentes catalogados:
    claw-kb article list --status cataloged --since 7d --min-relevance 7 --limit 30
 
-2. Buscar publicações recentes do Gabriel:
+2. Buscar publicações recentes do usuario:
    claw-kb pub list --since 30d
    claw-kb pub topics
 
@@ -456,9 +456,9 @@ Advisor roda às 10h com esses dados.
 
 5. Para cada cluster:
    a. Deduplicar: se múltiplos artigos cobrem o mesmo fato, manter o melhor (maior score)
-   b. claw-kb crossref (buscar publicações anteriores do Gabriel sobre o tema)
+   b. claw-kb crossref (buscar publicações anteriores do usuario sobre o tema)
    c. Avaliar se o tema tem potencial de conteúdo original:
-      - Gabriel tem experiência/opinião pra agregar?
+      - o usuario tem experiência/opinião pra agregar?
       - É ângulo novo ou já postou algo parecido recentemente?
       - Tem momentum (múltiplos artigos sobre o tema)?
 
@@ -497,7 +497,7 @@ Advisor roda às 10h com esses dados.
    - Ângulo diferencial (o que torna essa rec original, não repost)
    - Pontos-chave a cobrir (extraídos dos artigos)
    - Quotes/dados prontos pra usar
-   - Referência cruzada com publicações anteriores do Gabriel
+   - Referência cruzada com publicações anteriores do usuario
    - Prioridade (high/medium/low)
 
 4. Salvar:
@@ -525,7 +525,7 @@ Recomendações — 28/03
 Responde com o número pra ver o briefing completo.
 ```
 
-**Briefing expandido (quando Gabriel escolhe um número):**
+**Briefing expandido (quando usuario escolhe um número):**
 ```
 Briefing #1: "Por que Agent Architectures falham em produção"
 
@@ -555,7 +555,7 @@ CTA sugerido: Pergunta aberta sobre experiências dos seguidores com agents
 
 #### 5.3.1 Output NotebookLM — Podcast diário de AI
 
-Junto com as recomendações, o recommender gera um texto otimizado pro formato conversacional do NotebookLM. Gabriel cola no NotebookLM e gera o áudio pra ouvir no treino.
+Junto com as recomendações, o recommender gera um texto otimizado pro formato conversacional do NotebookLM. o usuario cola no NotebookLM e gera o áudio pra ouvir no treino.
 
 **O texto é enviado como mensagem separada no Telegram**, pronto pra copiar e colar:
 
@@ -566,7 +566,7 @@ Cola esse texto no NotebookLM pra gerar teu áudio:
 ---
 BRIEFING DIÁRIO DE AI — 28 de março de 2026
 
-CONTEXTO: Este briefing é para Gabriel Bastos, Head de AI que trabalha com
+CONTEXTO: Este briefing é para <your-name>, <your-role> que trabalha com
 agentes autônomos (11 agentes Qwen em produção), automação com OpenClaw,
 e produz conteúdo sobre AI para LinkedIn e newsletters.
 
@@ -574,16 +574,16 @@ DESTAQUES DO DIA:
 
 1. AGENT ARCHITECTURES EM PRODUÇÃO
 A Anthropic publicou um paper sobre arquiteturas de agentes multi-step.
-O ponto central é [X]. Isso é relevante porque Gabriel opera 11 agentes
+O ponto central é [X]. Isso é relevante porque o usuario opera 11 agentes
 em produção e a abordagem proposta contradiz/confirma o que ele já faz
 com [Y]. Dados importantes: [quotes e métricas extraídas dos artigos].
 Pergunta provocativa: a arquitetura proposta funcionaria no contexto de
-conciliação bancária onde o Gabriel aplica agentes?
+conciliação bancária onde o usuario aplica agentes?
 
 2. SMOLAGENTS V2
 O Hugging Face lançou a v2 do SmolAgents com tool-calling nativo sem
 framework pesado. Isso importa porque [X]. Comparado com LangChain que
-Gabriel já avaliou, a diferença é [Y]. Simon Willison comentou que [Z].
+o usuario já avaliou, a diferença é [Y]. Simon Willison comentou que [Z].
 Pergunta provocativa: vale migrar algum dos 11 agentes pra SmolAgents
 ou o overhead de migração não justifica?
 
@@ -591,7 +591,7 @@ ou o overhead de migração não justifica?
 ...
 
 CONEXÕES ENTRE OS TEMAS:
-[Como os destaques do dia se relacionam entre si e com os projetos do Gabriel]
+[Como os destaques do dia se relacionam entre si e com os projetos do usuario]
 
 PERGUNTA DO DIA:
 [Uma pergunta provocativa que conecta os temas e incentiva reflexão durante o treino]
@@ -601,17 +601,17 @@ PERGUNTA DO DIA:
 **Regras do texto NotebookLM:**
 - Máximo 3 temas por dia (foco > volume)
 - Linguagem conversacional, não acadêmica — o NotebookLM vai transformar em diálogo
-- Sempre contextualizar pro Gabriel (seus projetos, sua stack, sua experiência)
+- Sempre contextualizar pro usuario (seus projetos, sua stack, sua experiência)
 - Incluir dados concretos e quotes — dá substância pro áudio
-- Terminar com pergunta provocativa — mantém o Gabriel pensando no treino
+- Terminar com pergunta provocativa — mantém o usuario pensando no treino
 - Se não houver destaques relevantes no dia, **não gerar** (não forçar conteúdo raso)
 
 ### 5.4 `content-summarizer` (EXISTENTE — sem mudanças)
 
 **Não participa do pipeline automático.** Funciona exclusivamente sob demanda:
-- Gabriel manda link no Telegram → summarizer lê artigo completo e gera resumo estruturado
-- Gabriel pede "resume o artigo X do scout report" → summarizer lê e resume
-- Gabriel pede transcrição de YouTube → summarizer processa
+- o usuario manda link no Telegram → summarizer lê artigo completo e gera resumo estruturado
+- o usuario pede "resume o artigo X do scout report" → summarizer lê e resume
+- o usuario pede transcrição de YouTube → summarizer processa
 
 Totalmente independente do pipeline scout → advisor → recommender.
 
@@ -623,21 +623,21 @@ Continua gerenciando preferências de tom/estrutura. Sem integração com claw-k
 
 ## 6. Gestão de Publicações (manual)
 
-O Gabriel gerencia o ciclo de vida das recomendações via Telegram:
+O o usuario gerencia o ciclo de vida das recomendações via Telegram:
 
 ```
-Gabriel: "aprovei a rec 3"
+o usuario: "aprovei a rec 3"
 → claw-kb rec update --id 3 --status approved
 
-Gabriel: "publiquei a rec 3 no linkedin"
+o usuario: "publiquei a rec 3 no linkedin"
 → claw-kb pub add --platform linkedin --title "..." --topics '[...]' --published-at 2026-03-28 --recommendation-id 3
 → claw-kb rec update --id 3 --status published
 
-Gabriel: "descarta a rec 2"
+o usuario: "descarta a rec 2"
 → claw-kb rec update --id 2 --status rejected
 ```
 
-Sem bootstrap de publicações históricas. O crossref começa a funcionar conforme Gabriel registra novas publicações. A qualidade do cruzamento melhora com o tempo.
+Sem bootstrap de publicações históricas. O crossref começa a funcionar conforme o usuario registra novas publicações. A qualidade do cruzamento melhora com o tempo.
 
 ---
 
@@ -658,7 +658,7 @@ Sem bootstrap de publicações históricas. O crossref começa a funcionar confo
 
 ### Artefato 1: `claw-kb` CLI
 - **O que:** CLI Node.js com better-sqlite3
-- **Onde:** `/root/.openclaw/tools/claw-kb/`
+- **Onde:** `~/.openclaw/tools/claw-kb/`
 - **Arquivos:**
   - `package.json`
   - `index.js` (entry point, parser de comandos)
@@ -673,7 +673,7 @@ Sem bootstrap de publicações históricas. O crossref começa a funcionar confo
 
 ### Artefato 2: Skill `content-scout`
 - **O que:** SKILL.md com instruções de ingestão e scoring
-- **Onde:** `/root/.openclaw/workspace/skills/content-scout/`
+- **Onde:** `~/.openclaw/workspace/skills/content-scout/`
 - **Arquivos:**
   - `SKILL.md`
   - `references/scoring-system.md` (critérios e pesos)
@@ -681,17 +681,17 @@ Sem bootstrap de publicações históricas. O crossref começa a funcionar confo
 
 ### Artefato 3: Skill `content-advisor`
 - **O que:** SKILL.md com instruções de deduplicação, cruzamento e agrupamento
-- **Onde:** `/root/.openclaw/workspace/skills/content-advisor/`
+- **Onde:** `~/.openclaw/workspace/skills/content-advisor/`
 - **Arquivos:**
   - `SKILL.md`
-  - `references/projetos-gabriel.md` (compartilhado com content-summarizer)
+  - `references/projetos-usuario.md` (compartilhado com content-summarizer)
 
 ### Artefato 4: Skill `content-recommender`
 - **O que:** SKILL.md com instruções de leitura completa e geração de briefings
-- **Onde:** `/root/.openclaw/workspace/skills/content-recommender/`
+- **Onde:** `~/.openclaw/workspace/skills/content-recommender/`
 - **Arquivos:**
   - `SKILL.md`
-  - `references/projetos-gabriel.md` (compartilhado)
+  - `references/projetos-usuario.md` (compartilhado)
   - `references/format-templates.md` (templates de output por formato de conteúdo)
 
 ### Artefato 5: Cron jobs
@@ -748,10 +748,10 @@ Sem bootstrap de publicações históricas. O crossref começa a funcionar confo
 
 | Risco | Probabilidade | Mitigação |
 |-------|--------------|-----------|
-| web_fetch falha em site com paywall | Média | Marcar como "failed", tentar browser tool, notificar Gabriel |
-| Gemini classifica scoring errado | Média | Breakdown de auditoria permite identificar critério errado. Gabriel ajusta pesos |
+| web_fetch falha em site com paywall | Média | Marcar como "failed", tentar browser tool, notificar o usuario |
+| Gemini classifica scoring errado | Média | Breakdown de auditoria permite identificar critério errado. o usuario ajusta pesos |
 | RSS de fonte muda/quebra | Baixa | Fallback pra scraping da página. Alertar após 3 falhas consecutivas |
-| Recommender gera briefing raso | Média | Templates de formato detalhados. Gabriel dá feedback via feedback-loop |
+| Recommender gera briefing raso | Média | Templates de formato detalhados. o usuario dá feedback via feedback-loop |
 | Volume de notificações alto demais | Baixa | Subir threshold. Agrupar em digest |
 | SQLite cresce demais | Muito baixa | Prune automático de "skipped" > 90 dias. Estimativa: ~5MB/ano |
 | Gemini Flash Lite não segue instruções das skills | Média | Skills com instruções simples e diretas. Pipeline em 3 etapas reduz complexidade por skill |

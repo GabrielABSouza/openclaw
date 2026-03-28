@@ -10,10 +10,10 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    VPS Hostinger                             │
+│                    VPS                                          │
 │                                                              │
 │  Componente 1: claw-kb CLI                                  │
-│  /root/.openclaw/tools/claw-kb/                             │
+│  ~/.openclaw/tools/claw-kb/                             │
 │  TypeScript nativo (Node 22 --experimental-strip-types)     │
 │  better-sqlite3                                             │
 │  ├── src/                                                   │
@@ -34,7 +34,7 @@
 │  └── test.ts               (validação de todos os comandos) │
 │                                                              │
 │  Componente 2: Skills OpenClaw                               │
-│  /root/.openclaw/workspace/skills/                          │
+│  ~/.openclaw/workspace/skills/                          │
 │  ├── content-scout/                                         │
 │  │   ├── SKILL.md                                           │
 │  │   └── references/                                        │
@@ -43,11 +43,11 @@
 │  ├── content-advisor/                                       │
 │  │   ├── SKILL.md                                           │
 │  │   └── references/                                        │
-│  │       └── projetos-gabriel.md                            │
+│  │       └── projetos-usuario.md                            │
 │  ├── content-recommender/                                   │
 │  │   ├── SKILL.md                                           │
 │  │   └── references/                                        │
-│  │       ├── projetos-gabriel.md                            │
+│  │       ├── projetos-usuario.md                            │
 │  │       ├── format-templates.md                            │
 │  │       └── notebooklm-template.md                         │
 │  ├── content-summarizer/    (existente, sem mudanças)       │
@@ -215,7 +215,7 @@ export type ErrorCode =
 
 ```typescript
 // Responsabilidades:
-// - Abrir/criar banco em /root/.openclaw/tools/claw-kb/content.db
+// - Abrir/criar banco em ~/.openclaw/tools/claw-kb/content.db
 // - Executar schema (CREATE TABLE IF NOT EXISTS)
 // - Expor instância do DB tipada
 // - Migrations futuras (versão do schema em user_version pragma)
@@ -499,14 +499,14 @@ switch (entity) {
 claw-kb article list --status cataloged --since 2026-03-25
 
 # Que na VPS resolve para:
-node --experimental-strip-types /root/.openclaw/tools/claw-kb/src/index.ts article list --status cataloged --since 2026-03-25
+node --experimental-strip-types ~/.openclaw/tools/claw-kb/src/index.ts article list --status cataloged --since 2026-03-25
 
 # Pra simplificar, criar symlink ou alias:
-ln -s /root/.openclaw/tools/claw-kb/run.sh /usr/local/bin/claw-kb
+ln -s ~/.openclaw/tools/claw-kb/run.sh /usr/local/bin/claw-kb
 
 # run.sh:
 #!/bin/bash
-exec node --experimental-strip-types /root/.openclaw/tools/claw-kb/src/index.ts "$@"
+exec node --experimental-strip-types ~/.openclaw/tools/claw-kb/src/index.ts "$@"
 ```
 
 ### 2.6 Testes (`test.ts`)
@@ -559,7 +559,7 @@ Você NÃO lê artigos completos. Trabalha apenas com título e excerpt/descriç
 ### 1. Determinar prioridade
 
 Se veio de cron, a prioridade está no prompt ("fontes P0", "fontes P1", "fontes P2").
-Se veio do Gabriel sem especificar, verificar todas as habilitadas.
+Se veio do usuario sem especificar, verificar todas as habilitadas.
 
 ### 2. Listar fontes
 
@@ -586,7 +586,7 @@ exec: claw-kb article add --url "<url>" --title "<titulo>" --source "<nome-fonte
 
 **Aplicar scoring:**
 Ler o arquivo de referência:
-`/root/.openclaw/workspace/skills/content-scout/references/scoring-system.md`
+`~/.openclaw/workspace/skills/content-scout/references/scoring-system.md`
 
 Avaliar CADA critério do scoring system com base no título + excerpt.
 Montar o breakdown JSON com os pontos de cada critério.
@@ -655,7 +655,7 @@ Advisor roda às 10h com esses dados.
 ```markdown
 # Scoring System de Relevância
 
-O Gabriel é Head de AI / AI Consultant. Ele trabalha com:
+O o usuario é Head de AI / AI Consultant. Ele trabalha com:
 - 11 agentes Qwen em produção
 - Conciliação bancária automatizada
 - Programa educacional "Construa Sua Carreira"
@@ -669,9 +669,9 @@ Providers que ele usa ativamente: Anthropic/Claude, Google/Gemini, Alibaba/Qwen
 | Critério | Pontos | Quando aplicar |
 |----------|--------|----------------|
 | Projeto direto | +3 | Título/excerpt menciona tema central de um dos projetos acima |
-| Ferramenta integrável | +2 | Repo, CLI, API, framework que pode ser integrado à stack do Gabriel |
+| Ferramenta integrável | +2 | Repo, CLI, API, framework que pode ser integrado à stack do usuario |
 | Provider relevante | +2 | Breaking news de Anthropic, Google/Gemini, ou Alibaba/Qwen |
-| Tema publicável | +2 | Assunto onde Gabriel pode agregar opinião original baseada em experiência real |
+| Tema publicável | +2 | Assunto onde o usuario pode agregar opinião original baseada em experiência real |
 | Dados concretos | +1 | Contém benchmarks, métricas, case studies quantitativos |
 | Opinião qualificada | +1 | Análise de alguém reconhecido, não só notícia factual |
 | Tendência emergente | +1 | Tema apareceu em 2+ fontes nos últimos 7 dias |
@@ -680,7 +680,7 @@ Providers que ele usa ativamente: Anthropic/Claude, Google/Gemini, Alibaba/Qwen
 
 | Critério | Pontos | Quando aplicar |
 |----------|--------|----------------|
-| Conteúdo introdutório | -2 | Tutorial básico, "o que é X", conceitos que Gabriel já domina |
+| Conteúdo introdutório | -2 | Tutorial básico, "o que é X", conceitos que o usuario já domina |
 | Notícia requentada | -3 | Mesmo fato já ingerido por outra fonte, sem ângulo novo |
 | Hype sem substância | -2 | Buzzwords sem informação acionável, dados, ou insight técnico |
 | Fora de escopo | -5 | Sem relação com AI, tech, negócios, carreira, ou marketing |
@@ -703,9 +703,9 @@ Para CADA critério, registrar:
 ---
 name: content-advisor
 description: "Analisar artigos catalogados pelo scout, deduplicar por tema,
-cruzar com histórico de publicações do Gabriel, e selecionar quais temas
+cruzar com histórico de publicações do usuario, e selecionar quais temas
 valem leitura completa pelo recommender. Ativar quando cron pedir análise
-ou quando Gabriel pedir 'analisa o que tem', 'quais temas estão quentes?',
+ou quando usuario pedir 'analisa o que tem', 'quais temas estão quentes?',
 'o que tá rolando?'."
 ---
 
@@ -721,8 +721,8 @@ completos. Trabalha com metadados do banco (título, summary, tags, score).
 
 ## Antes de começar (OBRIGATÓRIO)
 
-Ler o arquivo de referência dos projetos do Gabriel:
-`/root/.openclaw/workspace/skills/content-advisor/references/projetos-gabriel.md`
+Ler o arquivo de referência dos projetos do usuario:
+`~/.openclaw/workspace/skills/content-advisor/references/projetos-usuario.md`
 
 ## Fluxo
 
@@ -758,11 +758,11 @@ Exemplos de agrupamento:
 ### 5. Para cada tema, avaliar
 
 a) **Deduplicação**: se múltiplos artigos cobrem o mesmo fato, manter o de maior score
-b) **Cruzamento**: o Gabriel já publicou sobre esse tema?
+b) **Cruzamento**: o usuario já publicou sobre esse tema?
    ```
    exec: claw-kb crossref --article-id <id-do-artigo-principal>
    ```
-c) **Potencial de conteúdo**: avaliar com base nos projetos do Gabriel:
+c) **Potencial de conteúdo**: avaliar com base nos projetos do usuario:
    - Ele tem experiência real pra opinar? (não apenas repostar)
    - É ângulo novo ou repetição do que já postou?
    - Tem momentum? (múltiplos artigos = tema quente)
@@ -785,7 +785,7 @@ Não envia nada no Telegram. Os dados ficam prontos pro recommender.
 
 1. NUNCA ler artigos completos. Trabalhar só com metadados do banco.
 2. Máximo 3 temas por dia. Foco > volume.
-3. Priorizar temas onde Gabriel pode agregar opinião original, não repost.
+3. Priorizar temas onde o usuario pode agregar opinião original, não repost.
 4. Se um tema já foi publicado recentemente (últimos 14 dias), só selecionar se houver ângulo novo.
 5. Temas com apenas 1 artigo e score 7 são fracos. Preferir temas com múltiplos artigos ou score 8+.
 ```
@@ -798,7 +798,7 @@ name: content-recommender
 description: "Ler artigos completos dos temas selecionados pelo advisor,
 gerar briefings de conteúdo com ângulo original, gancho, quotes e dados
 prontos pra usar, e gerar texto otimizado pro NotebookLM. Ativar quando
-cron pedir recomendações ou quando Gabriel pedir 'gera recomendações',
+cron pedir recomendações ou quando usuario pedir 'gera recomendações',
 'o que posso postar?', 'recomendações', 'briefing'."
 ---
 
@@ -816,9 +816,9 @@ completos via web_fetch.
 ## Antes de começar (OBRIGATÓRIO)
 
 Ler os arquivos de referência:
-- `/root/.openclaw/workspace/skills/content-recommender/references/projetos-gabriel.md`
-- `/root/.openclaw/workspace/skills/content-recommender/references/format-templates.md`
-- `/root/.openclaw/workspace/skills/content-recommender/references/notebooklm-template.md`
+- `~/.openclaw/workspace/skills/content-recommender/references/projetos-usuario.md`
+- `~/.openclaw/workspace/skills/content-recommender/references/format-templates.md`
+- `~/.openclaw/workspace/skills/content-recommender/references/notebooklm-template.md`
 
 ## Fluxo
 
@@ -857,11 +857,11 @@ Para cada tema, criar recomendação com:
 
 - **Título sugerido**: conciso, provocativo, não clickbait
 - **Formato**: o mais adequado pro conteúdo (linkedin-post, twitter-thread, article, newsletter, video-short)
-- **Gancho**: 1-2 frases de abertura que prendem atenção. Deve partir da experiência do Gabriel, não do artigo.
-- **Ângulo diferencial**: o que torna essa recomendação original. Não é repost — é a visão do Gabriel sobre o tema.
-- **Pontos-chave**: 3-5 pontos a cobrir, cada um conectando o conteúdo dos artigos com a experiência do Gabriel
+- **Gancho**: 1-2 frases de abertura que prendem atenção. Deve partir da experiência do usuario, não do artigo.
+- **Ângulo diferencial**: o que torna essa recomendação original. Não é repost — é a visão do usuario sobre o tema.
+- **Pontos-chave**: 3-5 pontos a cobrir, cada um conectando o conteúdo dos artigos com a experiência do usuario
 - **Quotes/dados**: trechos exatos dos artigos, prontos pra citar com fonte e data
-- **Referência cruzada**: como isso se conecta com publicações anteriores do Gabriel
+- **Referência cruzada**: como isso se conecta com publicações anteriores do usuario
 - **Prioridade**: high (timing urgente + ângulo forte), medium (bom mas não urgente), low (interessante mas pode esperar)
 
 Salvar:
@@ -875,12 +875,12 @@ Após gerar as recomendações, compilar os destaques do dia em um texto otimiza
 pro formato conversacional do NotebookLM.
 
 Ler template:
-`/root/.openclaw/workspace/skills/content-recommender/references/notebooklm-template.md`
+`~/.openclaw/workspace/skills/content-recommender/references/notebooklm-template.md`
 
 Regras do texto NotebookLM:
 - Máximo 3 temas
 - Linguagem conversacional, não acadêmica
-- Sempre contextualizar pro Gabriel (projetos, stack, experiência)
+- Sempre contextualizar pro usuario (projetos, stack, experiência)
 - Incluir dados concretos e quotes
 - Terminar com pergunta provocativa
 - Se não houver destaques relevantes, NÃO gerar
@@ -912,7 +912,7 @@ Cola no NotebookLM:
 ---
 ```
 
-Se Gabriel pedir briefing expandido (responde com número), retornar:
+Se o usuario pedir briefing expandido (responde com número), retornar:
 
 ```
 Briefing #N: "Título"
@@ -942,7 +942,7 @@ CTA sugerido: ...
 
 1. SEMPRE ler os artigos completos com web_fetch antes de gerar recomendação.
 2. NUNCA inventar dados ou quotes. Tudo deve vir dos artigos lidos.
-3. O gancho deve partir da EXPERIÊNCIA DO GABRIEL, não do artigo.
+3. O gancho deve partir da EXPERIENCIA DO USUARIO, nao do artigo.
 4. Ângulo é o diferencial — se não tem ângulo original, não recomende.
 5. Máximo 3 recomendações por dia. Qualidade > quantidade.
 6. Idioma: tudo PT-BR, mesmo que artigos sejam em inglês.
@@ -962,7 +962,7 @@ de podcast, então escreva de forma que flua como conversa.
 ```
 BRIEFING DIÁRIO DE AI — [data por extenso]
 
-CONTEXTO: Este briefing é para Gabriel Bastos, Head de AI que trabalha com
+CONTEXTO: Este briefing é para <your-name>, <your-role> que trabalha com
 agentes autônomos (11 agentes Qwen em produção), automação com OpenClaw,
 e produz conteúdo sobre AI para LinkedIn e newsletters.
 
@@ -970,9 +970,9 @@ DESTAQUES DO DIA:
 
 1. [TÍTULO DO TEMA]
 [Contexto: o que aconteceu, quem publicou, por que importa]
-[Relevância pro Gabriel: como se conecta com seus projetos/experiência]
+[Relevância pro usuario: como se conecta com seus projetos/experiência]
 [Dados importantes: métricas, quotes, fatos concretos]
-[Pergunta provocativa: algo pra Gabriel refletir durante o treino]
+[Pergunta provocativa: algo pra o usuario refletir durante o treino]
 
 2. [TÍTULO DO TEMA]
 ...
@@ -981,7 +981,7 @@ DESTAQUES DO DIA:
 ...
 
 CONEXÕES ENTRE OS TEMAS:
-[Como os destaques se relacionam entre si e com os projetos do Gabriel]
+[Como os destaques se relacionam entre si e com os projetos do usuario]
 
 PERGUNTA DO DIA:
 [Uma pergunta que conecta tudo e incentiva reflexão]
@@ -991,11 +991,11 @@ PERGUNTA DO DIA:
 
 - Máximo 3 temas
 - Linguagem conversacional (o NotebookLM vai transformar em diálogo)
-- Sempre referenciar projetos e experiência do Gabriel
+- Sempre referenciar projetos e experiência do usuario
 - Dados concretos > opinião vaga
 - Pergunta do dia deve ser genuinamente interessante, não retórica
 - Se só tem 1 tema relevante, gerar com 1 tema. Não inventar pra completar 3.
-- Se NENHUM tema é relevante, NÃO gerar texto. Dizer ao Gabriel que não há destaques.
+- Se NENHUM tema é relevante, NÃO gerar texto. Dizer ao usuario que não há destaques.
 ```
 
 ### 3.6 Arquivo de referência: `format-templates.md`
@@ -1033,10 +1033,10 @@ Referência para o recommender escolher o formato adequado e calibrar o briefing
 - Funciona bem para: dado surpreendente, demo rápida, take polêmico
 ```
 
-### 3.7 Arquivo de referência: `projetos-gabriel.md`
+### 3.7 Arquivo de referência: `projetos-usuario.md`
 
 ```markdown
-# Projetos do Gabriel
+# Projetos do usuario
 
 Referência para scoring, cruzamento e recomendações.
 
@@ -1065,7 +1065,7 @@ Referência para scoring, cruzamento e recomendações.
 - Temas relacionados: personal branding, thought leadership, content strategy
 
 ## 5. OpenClaw / Automação
-- Antonio Bot (Bicho Antonio)
+- <your-bot> (<your-bot>)
 - Pipeline de conteúdo automatizado
 - Skills e cron jobs
 - Temas relacionados: AI assistants, automation, productivity tools

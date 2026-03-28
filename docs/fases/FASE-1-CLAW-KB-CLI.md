@@ -10,7 +10,7 @@ Criar a CLI TypeScript que serve como camada determinística entre o agente e o 
 ## Tasks
 
 ### Setup
-- [ ] Criar estrutura do projeto em `/root/.openclaw/tools/claw-kb/`
+- [ ] Criar estrutura do projeto em `~/.openclaw/tools/claw-kb/`
 - [ ] Criar `package.json` com dependência `better-sqlite3`
 - [ ] Instalar dependências na VPS (`npm install`)
 - [ ] Criar `run.sh` e symlink `/usr/local/bin/claw-kb`

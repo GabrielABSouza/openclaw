@@ -11,14 +11,14 @@ Criar as 3 skills do pipeline (scout, advisor, recommender) com seus arquivos de
 ## Tasks
 
 ### Arquivos de referência (compartilhados)
-- [ ] Criar `references/projetos-gabriel.md` (usado por advisor e recommender)
+- [ ] Criar `references/projetos-usuario.md` (usado por advisor e recommender)
 - [ ] Criar `references/scoring-system.md` (usado pelo scout)
 - [ ] Criar `references/format-templates.md` (usado pelo recommender)
 - [ ] Criar `references/notebooklm-template.md` (usado pelo recommender)
 - [ ] Criar `references/sources-config.md` (documentação das fontes, usado pelo scout)
 
 ### Skill: content-scout
-- [ ] Criar `/root/.openclaw/workspace/skills/content-scout/SKILL.md`
+- [ ] Criar `~/.openclaw/workspace/skills/content-scout/SKILL.md`
 - [ ] Copiar `references/scoring-system.md` pra dentro da skill
 - [ ] Copiar `references/sources-config.md` pra dentro da skill
 - [ ] Testar manualmente: pedir pro bot "roda o scout P0" via Telegram
@@ -26,14 +26,14 @@ Criar as 3 skills do pipeline (scout, advisor, recommender) com seus arquivos de
 - [ ] Verificar: breakdown de scoring está salvo (`claw-kb article get --id 1`)
 
 ### Skill: content-advisor
-- [ ] Criar `/root/.openclaw/workspace/skills/content-advisor/SKILL.md`
-- [ ] Copiar `references/projetos-gabriel.md` pra dentro da skill
+- [ ] Criar `~/.openclaw/workspace/skills/content-advisor/SKILL.md`
+- [ ] Copiar `references/projetos-usuario.md` pra dentro da skill
 - [ ] Testar manualmente: pedir "analisa o que tem no banco" via Telegram
 - [ ] Verificar: artigos marcados como "analyzed" (`claw-kb article list --status analyzed`)
 
 ### Skill: content-recommender
-- [ ] Criar `/root/.openclaw/workspace/skills/content-recommender/SKILL.md`
-- [ ] Copiar `references/projetos-gabriel.md`, `format-templates.md`, `notebooklm-template.md`
+- [ ] Criar `~/.openclaw/workspace/skills/content-recommender/SKILL.md`
+- [ ] Copiar `references/projetos-usuario.md`, `format-templates.md`, `notebooklm-template.md`
 - [ ] Testar manualmente: pedir "gera recomendações" via Telegram
 - [ ] Verificar: recomendações salvas (`claw-kb rec list`)
 - [ ] Verificar: texto NotebookLM enviado no Telegram

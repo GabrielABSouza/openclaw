@@ -2,7 +2,7 @@
 name: content-summarizer
 description: >
   Resumir e analisar conteudo recebido pelo usuario gerando resumo estruturado
-  com insights para projetos do Gabriel e quotables para producao de conteudo.
+  com insights para projetos do usuario e quotables para producao de conteudo.
   Ativar quando o usuario enviar link, colar texto, enviar PDF, imagem, audio,
   ou pedir 'resumo', 'resume isso', 'analisa esse artigo', 'o que tem nesse link',
   'le pra mim', 'ative sua skill de resumo'.
@@ -12,12 +12,12 @@ description: >
 
 # Content Summarizer
 
-Resumir conteudo e gerar insights acionaveis para os projetos do Gabriel.
+Resumir conteudo e gerar insights acionaveis para os projetos do usuario.
 
 ## Workflow
 
 1. Ler references/preferences.md
-2. Ler references/projetos-gabriel.md
+2. Ler references/projetos-usuario.md (se existir)
 3. Extrair conteudo:
    - SE link → usar web_fetch na URL
    - SE texto colado → processar direto
@@ -37,8 +37,8 @@ Resumir conteudo e gerar insights acionaveis para os projetos do Gabriel.
 
 ### Exemplo 1 — Artigo sobre AI
 Input: "resume isso: https://aimodels.substack.com/p/why-pay-for-proprietary-search-apis"
-Output: Resumo com TL;DR, 5 pontos-chave, insights para Agentes Qwen e Marca Pessoal, hot take, 2 quotables, 2 ideias de conteudo (post LinkedIn + thread Twitter)
+Output: Resumo com TL;DR, 5 pontos-chave, insights para projetos do usuario, hot take, 2 quotables, 2 ideias de conteudo (post LinkedIn + thread Twitter)
 
 ### Exemplo 2 — Ferramenta com repo GitHub
 Input: "https://github.com/user/cool-agent-framework"
-Output: Mesmo resumo + secao extra de Integracao (setup, aplicacao por projeto, integracao com OpenClaw/Antonio, esforco estimado)
+Output: Mesmo resumo + secao extra de Integracao (setup, aplicacao por projeto, integracao com OpenClaw, esforco estimado)

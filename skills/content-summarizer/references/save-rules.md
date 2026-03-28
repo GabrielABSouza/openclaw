@@ -2,14 +2,14 @@
 
 Apos gerar o resumo, salvar em:
 ```
-/root/.openclaw/workspace/knowledge/<categoria>/<YYYY-MM-DD>-<titulo-slug>.md
+~/.openclaw/workspace/knowledge/<categoria>/<YYYY-MM-DD>-<titulo-slug>.md
 ```
 
 ## Regras
 
 - Categoria lowercase sem acento: ai, tech, negocios, carreira, marketing, produtividade, financas
 - Titulo em kebab-case, maximo 50 caracteres
-- Criar diretorio com exec se nao existir: `mkdir -p /root/.openclaw/workspace/knowledge/<categoria>`
+- Criar diretorio com exec se nao existir: `mkdir -p ~/.openclaw/workspace/knowledge/<categoria>`
 
 ## Frontmatter do arquivo salvo
 
@@ -32,5 +32,5 @@ tool_repo: (URL do repo, se aplicavel)
 
 Quando has_tool = true, salvar tambem em:
 ```
-/root/.openclaw/workspace/knowledge/tools/<YYYY-MM-DD>-<tool-name>.md
+~/.openclaw/workspace/knowledge/tools/<YYYY-MM-DD>-<tool-name>.md
 ```

@@ -11,15 +11,13 @@ Pontos-chave
 - (ser especifico — dados, nomes, metodos, resultados)
 
 Insights para seus projetos
-- [Agentes Qwen] como se aplica ao trabalho com os 11 agentes, fine-tuning, workflows
-- [Conciliacao Bancaria] automacao, matching, auditoria
-- [Construa Sua Carreira] conteudo educacional, carreira em AI
-- [Marca Pessoal] posicionamento, autoridade, diferenciacao
+- [Projeto 1] como se aplica
+- [Projeto 2] como se aplica
 - [Conhecimento Geral] aprendizado que nao se encaixa em projeto especifico
 (incluir apenas projetos que se aplicam — nao forcar)
 
 Hot take
-(1-2 frases com opiniao sobre por que isso importa pro Gabriel. Direto e genuino, nao generico. Se o conteudo e mediano, dizer isso.)
+(1-2 frases com opiniao sobre por que isso importa pro usuario. Direto e genuino, nao generico. Se o conteudo e mediano, dizer isso.)
 
 Quotables
 - "frase, dado ou estatistica impactante pronta pra usar em post"

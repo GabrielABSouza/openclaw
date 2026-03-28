@@ -39,7 +39,7 @@ Configurar os cron jobs no OpenClaw pra que o pipeline rode automaticamente todo
 
 ## Critério de conclusão
 
-Pipeline roda 3 dias consecutivos sem intervenção manual e Gabriel recebe:
+Pipeline roda 3 dias consecutivos sem intervencao manual e o usuario recebe:
 1. Scout reports relevantes
 2. Recomendações com ângulos originais
 3. Texto NotebookLM pronto pra podcast diário

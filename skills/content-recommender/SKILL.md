@@ -3,7 +3,7 @@ name: content-recommender
 description: >
   Ler artigos completos dos temas selecionados pelo advisor, gerar briefings
   de conteudo com angulo original, gancho, quotes e dados prontos pra usar.
-  Ativar quando cron pedir recomendacoes ou quando Gabriel pedir 'gera recomendacoes',
+  Ativar quando cron pedir recomendacoes ou quando o usuario pedir 'gera recomendacoes',
   'o que posso postar?', 'recomendacoes', 'briefing'.
   NAO usar para: resumir um link avulso (usar content-summarizer), varrer fontes (usar content-scout).
 ---
@@ -51,9 +51,9 @@ Quando o CLI retornar `phase: "recommendation"`, agrupar artigos por tema e gera
 Para cada tema:
 - Titulo conciso e provocativo
 - Formato: linkedin-post, twitter-thread, article, newsletter, video-short
-- Gancho: 1-2 frases partindo da EXPERIENCIA DO GABRIEL
+- Gancho: 1-2 frases partindo da EXPERIENCIA DO USUARIO
 - Angulo diferencial: visao original, nao repost
-- Pontos-chave: 3-5 pontos conectando artigos com experiencia do Gabriel
+- Pontos-chave: 3-5 pontos conectando artigos com experiencia do usuario
 - Quotes/dados: trechos exatos dos artigos
 
 ```

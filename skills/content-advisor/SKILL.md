@@ -1,6 +1,6 @@
 ---
 name: content-advisor
-description: "Analisar artigos catalogados pelo scout, deduplicar por tema, cruzar com histórico de publicações do Gabriel, e selecionar quais temas valem leitura completa pelo recommender. Ativar quando cron pedir análise ou quando Gabriel pedir 'analisa o que tem', 'quais temas estão quentes?', 'o que tá rolando?'."
+description: "Analisar artigos catalogados pelo scout, deduplicar por tema, cruzar com historico de publicacoes, e selecionar quais temas valem leitura completa pelo recommender. Ativar quando cron pedir analise ou quando o usuario pedir 'analisa o que tem', 'quais temas estao quentes?', 'o que ta rolando?'."
 ---
 
 # Content Advisor — Filtragem e Agrupamento
@@ -15,8 +15,8 @@ completos. Trabalha com metadados do banco (título, summary, tags, score).
 
 ## Antes de começar (OBRIGATÓRIO)
 
-Ler o arquivo de referência dos projetos do Gabriel:
-`/root/.openclaw/workspace/skills/content-advisor/references/projetos-gabriel.md`
+Ler o arquivo de referência dos projetos do usuario (se existir):
+`~/.openclaw/workspace/skills/content-advisor/references/projetos-usuario.md`
 
 ## Fluxo
 
@@ -52,13 +52,13 @@ Exemplos de agrupamento:
 ### 5. Para cada tema, avaliar
 
 a) **Deduplicação**: se múltiplos artigos cobrem o mesmo fato, manter o de maior score
-b) **Cruzamento**: o Gabriel já publicou sobre esse tema?
+b) **Cruzamento**: o usuario ja publicou sobre esse tema?
    ```
    exec: claw-kb crossref --article-id <id-do-artigo-principal>
    ```
-c) **Potencial de conteúdo**: avaliar com base nos projetos do Gabriel:
-   - Ele tem experiência real pra opinar? (não apenas repostar)
-   - É ângulo novo ou repetição do que já postou?
+c) **Potencial de conteudo**: avaliar com base nos projetos do usuario:
+   - Tem experiencia real pra opinar? (nao apenas repostar)
+   - E angulo novo ou repeticao do que ja postou?
    - Tem momentum? (múltiplos artigos = tema quente)
    - Tem dados concretos que sustentam um post?
 
@@ -79,6 +79,6 @@ Não envia nada no Telegram. Os dados ficam prontos pro recommender.
 
 1. NUNCA ler artigos completos. Trabalhar só com metadados do banco.
 2. Máximo 3 temas por dia. Foco > volume.
-3. Priorizar temas onde Gabriel pode agregar opinião original, não repost.
+3. Priorizar temas onde o usuario pode agregar opiniao original, nao repost.
 4. Se um tema já foi publicado recentemente (últimos 14 dias), só selecionar se houver ângulo novo.
 5. Temas com apenas 1 artigo e score 7 são fracos. Preferir temas com múltiplos artigos ou score 8+.

@@ -1,44 +1,43 @@
 # Template NotebookLM
 
-Gere o texto seguindo esta estrutura. O NotebookLM vai transformar em diálogo
-de podcast, então escreva de forma que flua como conversa.
+Gere o texto seguindo esta estrutura. O NotebookLM vai transformar em dialogo
+de podcast, entao escreva de forma que flua como conversa.
 
 ## Estrutura
 
 ```
-BRIEFING DIÁRIO DE AI — [data por extenso]
+BRIEFING DIARIO DE AI — [data por extenso]
 
-CONTEXTO: Este briefing é para Gabriel Bastos, Head de AI que trabalha com
-agentes autônomos (11 agentes Qwen em produção), automação com OpenClaw,
-e produz conteúdo sobre AI para LinkedIn e newsletters.
+CONTEXTO: Este briefing e para <your-name>, <your-role>.
+Adaptar ao perfil e projetos do usuario.
 
 DESTAQUES DO DIA:
 
-1. [TÍTULO DO TEMA]
+1. [TITULO DO TEMA]
 [Contexto: o que aconteceu, quem publicou, por que importa]
-[Relevância pro Gabriel: como se conecta com seus projetos/experiência]
-[Dados importantes: métricas, quotes, fatos concretos]
-[Pergunta provocativa: algo pra Gabriel refletir durante o treino]
+[Relevancia pro usuario: como se conecta com seus projetos/experiencia]
+[Dados importantes: metricas, quotes, fatos concretos]
+[Pergunta provocativa: algo pra refletir]
 
-2. [TÍTULO DO TEMA]
+2. [TITULO DO TEMA]
 ...
 
-3. [TÍTULO DO TEMA SE HOUVER]
+3. [TITULO DO TEMA SE HOUVER]
 ...
 
-CONEXÕES ENTRE OS TEMAS:
-[Como os destaques se relacionam entre si e com os projetos do Gabriel]
+CONEXOES ENTRE OS TEMAS:
+[Como os destaques se relacionam entre si e com os projetos do usuario]
 
 PERGUNTA DO DIA:
-[Uma pergunta que conecta tudo e incentiva reflexão]
+[Uma pergunta que conecta tudo e incentiva reflexao]
 ```
 
 ## Regras
 
-- Máximo 3 temas
-- Linguagem conversacional (o NotebookLM vai transformar em diálogo)
-- Sempre referenciar projetos e experiência do Gabriel
-- Dados concretos > opinião vaga
-- Pergunta do dia deve ser genuinamente interessante, não retórica
-- Se só tem 1 tema relevante, gerar com 1 tema. Não inventar pra completar 3.
-- Se NENHUM tema é relevante, NÃO gerar texto. Dizer ao Gabriel que não há destaques.
+- Maximo 3 temas
+- Linguagem conversacional (o NotebookLM vai transformar em dialogo)
+- Sempre referenciar projetos e experiencia do usuario
+- Dados concretos > opiniao vaga
+- Pergunta do dia deve ser genuinamente interessante, nao retorica
+- Se so tem 1 tema relevante, gerar com 1 tema. Nao inventar pra completar 3.
+- Se NENHUM tema e relevante, NAO gerar texto. Informar que nao ha destaques.

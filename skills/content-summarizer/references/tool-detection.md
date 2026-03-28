@@ -21,12 +21,11 @@ Repo/Link: (URL direta)
 Setup: (como instalar em 1-3 passos)
 
 Como usar nos seus projetos:
-- [Agentes Qwen] (aplicacao pratica especifica)
-- [Conciliacao Bancaria] (se aplicavel)
-- [Construa Sua Carreira] (se aplicavel)
-- [OpenClaw/Antonio] (SEMPRE avaliar: pode virar skill, hook, cron job ou tool?)
+- [Projeto 1] (aplicacao pratica especifica)
+- [Projeto 2] (se aplicavel)
+- [OpenClaw] (SEMPRE avaliar: pode virar skill, hook, cron job ou tool?)
 
-Integracao com o Antonio (OpenClaw):
+Integracao com OpenClaw:
 - (avaliar se pode virar skill, ser chamada via exec, monitorada por cron)
 - (se sim: descrever caminho de integracao em 2-3 passos)
 - (se nao: explicar por que e sugerir alternativa)
@@ -40,4 +39,4 @@ Prioridade sugerida: Alta / Media / Baixa
 - Ser brutalmente pratico — dizer exatamente o que fazer, com que comando, em qual projeto
 - Se o repo tem README com instrucoes, extrair os passos de setup reais
 - Se a ferramenta nao se aplica: "Sem aplicacao direta agora. Guardar como referencia."
-- Estimar esforco considerando que Gabriel e tecnico (Head de AI)
+- Estimar esforco considerando o nivel tecnico do usuario

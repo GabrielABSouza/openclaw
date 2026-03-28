@@ -1,7 +1,7 @@
-# OpenClaw - Referência Técnica para o Projeto do Gabriel
+# OpenClaw - Referencia Tecnica
 
-> Documento de referência interno para minimizar erros de implementação.
-> Baseado na documentação oficial, repos do Bruno Okamoto e comunidade.
+> Documento de referencia para minimizar erros de implementacao.
+> Baseado na documentacao oficial, repos do Bruno Okamoto e comunidade.
 
 ---
 
@@ -9,8 +9,8 @@
 
 - **Gateway**: Daemon principal que gerencia todos os canais (Telegram, WhatsApp, Discord, etc.)
 - **Agent Runtime**: Motor de IA que processa mensagens, gerencia sessões e executa tools
-- **Workspace**: `/root/.openclaw/workspace/` — arquivos de contexto injetados a cada sessão
-- **Config**: `/root/.openclaw/openclaw.json` — configuração central
+- **Workspace**: `~/.openclaw/workspace/` — arquivos de contexto injetados a cada sessao
+- **Config**: `~/.openclaw/openclaw.json` — configuracao central
 - **Sessions**: JSONL em `~/.openclaw/agents/<agentId>/sessions/<sessionId>.jsonl`
 
 ### Arquivos de Bootstrap (injetados automaticamente)
@@ -28,11 +28,11 @@
 ## 2. Configuração Atual na VPS
 
 ```
-VPS: srv1516765 (187.77.247.253)
+VPS: <your-hostname> (<your-server-ip>)
 OpenClaw: 2026.3.23-2
 Modelo: groq/moonshotai/kimi-k2-instruct (128k ctx)
-Canal: Telegram (@BichoAntonioBot)
-Workspace: /root/.openclaw/workspace/
+Canal: Telegram (<your-bot>)
+Workspace: ~/.openclaw/workspace/
 Gateway port: 18789 (loopback)
 ```
 
@@ -148,7 +148,7 @@ openclaw cron add --name "Briefing matinal" \
   --cron "0 7 * * *" --tz "America/Sao_Paulo" \
   --session isolated \
   --message "Faça um resumo das últimas notícias de AI, tech e mercado financeiro." \
-  --announce --channel telegram --to "7129223306"
+  --announce --channel telegram --to "<your-telegram-id>"
 
 # Lembrete one-shot
 openclaw cron add --name "Lembrete reunião" \
@@ -158,11 +158,11 @@ openclaw cron add --name "Lembrete reunião" \
 
 # Job semanal com modelo específico
 openclaw cron add --name "Análise semanal" \
-  --cron "0 9 * * 1" --tz "America/Sao_Paulo" \
+  --cron "0 9 * * 1" --tz "<your-timezone>" \
   --session isolated \
   --message "Análise semanal dos projetos" \
   --model "openai/gpt-5.1-codex" \
-  --announce --channel telegram --to "7129223306"
+  --announce --channel telegram --to "<your-telegram-id>"
 ```
 
 ### Gerenciamento
@@ -342,7 +342,7 @@ Adicionar checklist de coisas para verificar:
 
 ---
 
-## 11. Sugestões de Skills/Tools para os Objetivos do Gabriel
+## 11. Sugestoes de Skills/Tools
 
 ### Objetivo 1: Scraping de Redes Sociais / Canais de Notícia
 | Ferramenta | Como usar |
@@ -502,7 +502,7 @@ curl -s https://api.anthropic.com/v1/messages \
 
 ### Via CLI (alternativa)
 ```bash
-export PATH=/root/.nvm/versions/node/v22.22.1/bin:$PATH
+export PATH=~/.nvm/versions/node/v22.22.1/bin:$PATH
 openclaw models auth paste-token --provider anthropic --profile-id anthropic:default
 # Cole o token quando solicitado
 openclaw models status  # Verificar auth
@@ -541,7 +541,7 @@ openclaw hooks info <name>         # info detalhada
 openclaw logs --tail 50            # últimos 50 logs
 
 # Conexão SSH
-ssh root@187.77.247.253
+ssh root@<your-server-ip>
 ```
 
 ---
@@ -590,7 +590,7 @@ Quando o provider é um "reasoning tag provider", o OpenClaw adiciona automatica
 ### Debug: verificar nos logs da sessão
 ```bash
 # Ver session JSONL mais recente
-find /root/.openclaw -name "*.jsonl" -mmin -5
+find ~/.openclaw -name "*.jsonl" -mmin -5
 
 # Extrair texto do assistant
 cat <session>.jsonl | python3 -c "
@@ -628,7 +628,7 @@ intake → context assembly → model inference → tool execution → streaming
 ### Session lifecycle
 - Skills são snapshotted no início da sessão e reusados
 - Mudanças em skills requerem nova sessão (ou skills watcher habilitado)
-- Sempre limpar sessão após mudanças em skills: `rm /root/.openclaw/agents/main/sessions/*.jsonl`
+- Sempre limpar sessao apos mudancas em skills: `rm ~/.openclaw/agents/main/sessions/*.jsonl`
 
 ### Timeouts
 - agent.wait: 30s (default)

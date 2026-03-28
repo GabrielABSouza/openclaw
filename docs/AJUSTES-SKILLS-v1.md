@@ -69,7 +69,7 @@ O SKILL.md fica só com:
 name: content-summarizer
 description: >
   Resumir e analisar conteúdo recebido pelo usuário gerando resumo estruturado
-  com insights para projetos do Gabriel e quotables para produção de conteúdo.
+  com insights para projetos do usuario e quotables para produção de conteúdo.
   Ativar quando o usuário enviar link, colar texto, enviar PDF, imagem, áudio,
   ou pedir 'resumo', 'resume isso', 'analisa esse artigo', 'o que tem nesse link'.
   NÃO usar para: tradução simples, busca na web, perguntas sobre código, tarefas
@@ -78,12 +78,12 @@ description: >
 
 # Content Summarizer
 
-Resumir conteúdo e gerar insights acionáveis para os projetos do Gabriel.
+Resumir conteúdo e gerar insights acionáveis para os projetos do usuario.
 
 ## Workflow
 
 1. Ler preferências: references/preferences.md
-2. Ler projetos: references/projetos-gabriel.md
+2. Ler projetos: references/projetos-usuario.md
 3. Extrair conteúdo:
    - Link → web_fetch na URL
    - Texto colado → processar direto
@@ -91,7 +91,7 @@ Resumir conteúdo e gerar insights acionáveis para os projetos do Gabriel.
 4. Ler template de output: references/output-template.md
 5. SE conteúdo menciona ferramenta/repo/lib → ler references/tool-detection.md
 6. Gerar resumo seguindo o template
-7. Salvar em /root/.openclaw/workspace/knowledge/<categoria>/<YYYY-MM-DD>-<slug>.md
+7. Salvar em ~/.openclaw/workspace/knowledge/<categoria>/<YYYY-MM-DD>-<slug>.md
 
 ## Output Format
 Sempre PT-BR. Formato definido em references/output-template.md.
@@ -122,7 +122,7 @@ Mover todo o conteúdo pesado para arquivos separados:
 | `references/tool-detection.md` | Critérios de detecção de ferramenta + template da seção de integração |
 | `references/save-rules.md` | Regras de salvamento (paths, frontmatter, categorias) |
 | `references/preferences.md` | Já existe |
-| `references/projetos-gabriel.md` | Já existe |
+| `references/projetos-usuario.md` | Já existe |
 
 ### 3. Deploy do scout state machine
 
@@ -132,7 +132,7 @@ Arquivos prontos localmente:
 - `skills/content-scout/SKILL.md` — atualizado para usar `claw-kb scout` commands
 
 Passos:
-1. Copiar `claw-kb/` completo para VPS (`/root/.openclaw/tools/claw-kb/`)
+1. Copiar `claw-kb/` completo para VPS (`~/.openclaw/tools/claw-kb/`)
 2. Copiar `skills/content-scout/SKILL.md` para VPS
 3. Rodar `npm install` no VPS
 4. Limpar sessão (skillsSnapshot + sessionId + .jsonl)
