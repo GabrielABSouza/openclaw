@@ -1,0 +1,16 @@
+# Secrets
+.env*
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.qodo/
+.vscode/
+.idea/
+
+# Node (futuro - claw-kb)
+node_modules/
+*.db
