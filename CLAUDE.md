@@ -6,7 +6,7 @@
 ## Ambiente
 - **VPS**: <your-provider> <your-hostname> (<your-server-ip>)
 - **OpenClaw**: v2026.3.23-2
-- **Modelo**: `google/gemini-2.5-flash-lite` (maxTokens: 8192 configurado)
+- **Modelo**: `google/gemini-2.5-flash` (maxTokens: 8192 configurado)
 - **Canal**: Telegram
 - **Workspace**: `~/.openclaw/workspace/`
 - **Config**: `~/.openclaw/openclaw.json`
