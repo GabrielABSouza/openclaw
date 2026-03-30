@@ -34,7 +34,6 @@ docs/
   content-intelligence/               # Arquitetura e plano do pipeline
   fases/                              # Checklists de implementacao (3 fases)
   REFERENCIA-OPENCLAW.md              # Referencia tecnica do OpenClaw
-  AJUSTES-SKILLS-v1.md                # Historico de ajustes e troubleshooting
 .env.example                          # Template de variaveis de ambiente
 CLAUDE.md                             # Contexto para Claude Code
 ```

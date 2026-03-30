@@ -39,7 +39,6 @@ Cada skill tem: `SKILL.md` (< 3KB), `evals/evals.json`, `references/` (templates
 
 ### Documentacao
 - `docs/REFERENCIA-OPENCLAW.md` — referencia tecnica completa (17 secoes)
-- `docs/AJUSTES-SKILLS-v1.md` — historico de problemas e correcoes
 - `docs/content-intelligence/ARQUITETURA-CONTENT-INTELLIGENCE.md` — arquitetura do pipeline
 
 ## Reply Tags — CRITICO (nao mexer)

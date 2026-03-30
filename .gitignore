@@ -2,6 +2,9 @@
 .env*
 *.env
 
+# Local (arquivos internos, nao vao pro repo publico)
+.local/
+
 # OS
 .DS_Store
 Thumbs.db
